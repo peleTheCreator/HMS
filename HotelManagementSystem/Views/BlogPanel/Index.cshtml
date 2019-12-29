@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Post>
+@{ 
+    Layout = null;
+}
+
+
+<html>
+<head>
+    <title>Blog Panel</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light text-white  border-bottom box-shadow mb-3" style="background-color:maroon">
+            <div class="container">               
+               <a class="text-white text-lg  navbar-brand" asp-area="" asp-controller="BlogPanel" asp-action="Index" style="color:white">Blogger || Index</a>
+               <a class="text-white text-lg navbar-brand " asp-area="" asp-controller="BlogPanel" asp-action="Edit" style="color:white">Create Post</a>               
+            </div>
+        </nav>
+    </header>
+
+
+    <div>
+        <ol>
+            @foreach (var post in Model)
+            {
+                <li>
+                    <a asp-controller="Blog" asp-action="Post" asp-route-id="@post.Id">
+                       @post.Name
+                    </a>
+                    <a asp-controller="BlogPanel" asp-action="Edit" asp-route-id="@post.Id">
+                        Edit
+                    </a>
+                    <a asp-controller="BlogPanel" asp-action="Remove" asp-route-id="@post.Id">
+                        Remove
+                    </a>
+                </li>
+            }
+        </ol>
+    </div>
+</body>
+</html>

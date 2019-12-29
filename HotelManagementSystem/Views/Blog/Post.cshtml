@@ -1,0 +1,481 @@
+﻿@model BlogPostViewModel
+@inject  IBlogResprository blogResprository
+@{
+    Layout = null;
+    var next = Model.Post.Id + 1;
+    var prev = Model.Post.Id - 1;
+ }
+
+
+
+@*
+<h2>
+        @Model.Post.Title
+    </h2>
+@if (!String.IsNullOrEmpty(Model.Post.Image))
+{
+    var image_path = $"/image/{Model.Post.Image}";
+    <img src="@image_path" width="500" />
+}
+<p>@Model.Post.Body</p>*@
+
+
+
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Transylvania</title>
+    <meta name="Title" content=@Model.Post.Title>
+    <meta name="description" content=@Model.Post.Description>
+    <meta name="keywords" content=@Model.Post.Tags.Replace(",", " ") @Model.Post.Categories>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <link rel="manifest" href="site.webmanifest"> -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/hms/img/favicon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- CSS here -->
+    <link href="~/hms/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/hms/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/hms/css/magnific-popup.css" rel="stylesheet" />
+    <link href="~/hms/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/hms/css/themify-icons.css" rel="stylesheet" />
+    <link href="~/hms/css/nice-select.css" rel="stylesheet" />
+    <link href="~/hms/css/flaticon.css" rel="stylesheet" />
+    <link href="~/hms/css/gijgo.css" rel="stylesheet" />
+    <link href="~/hms/css/animate.css" rel="stylesheet" />
+    <link href="~/hms/css/slicknav.css" rel="stylesheet" />
+    <link href="~/hms/css/style.css" rel="stylesheet" />
+
+    <!-- <link rel="stylesheet" href="~/hms/css/responsive.css"> -->
+</head>
+<body>
+    <header>
+        <div class="header-area ">
+            <div id="sticky-header" class="main-header-area">
+                <div class="container-fluid p-0">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col-xl-5 col-lg-6">
+                            <div class="main-menu  d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a href="index.html">home</a></li>
+                                        <li><a href="rooms.html">rooms</a></li>
+                                        <li><a href="about.html">About</a></li>
+                                        <li>
+                                            <a class="active" href="#">blog</a>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-4 d-none d-lg-block">
+                            <div class="book_room">
+                                <div class="socail_links">
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-facebook-square"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-instagram"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header-end -->
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg">
+        <h3>TransylVania blog</h3>
+    </div>
+    <!-- bradcam_area_end -->
+    <!--================Blog Area =================-->
+    <section class="blog_area single-post-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 posts-list">
+                    <div class="single-post">
+                        <div class="feature-img">
+                            @if (!String.IsNullOrEmpty(Model.Post.Image))
+                            {
+                                var image = Model.Post.Image;
+                                var path = $"https://localhost:44349/api/FileManager/" + image;
+                               <img class="img-fluid" src=@path alt="">
+                            }
+                        </div>
+                        <div class="blog_details">
+                            <h2>
+                                @Html.Raw(Model.Post.Title)
+                            </h2>
+                            <ul class="blog-info-link mt-3 mb-4">
+                                <li><a href="#"><i class="fa fa-user"></i>@Model.Post.Categories</a></li>
+                                <li><a href="#"><i class="fa fa-comments"></i> @Model.Comment.Count() Comments</a></li>
+                            </ul>
+                            <div class="quote-wrapper">
+                                <div class="quotes">
+                                    @Html.Raw(Model.Post.HeadLines)
+                                </div>
+                            </div>
+                            <p class="excert">
+                                @Html.Raw(Model.Post.Body)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="navigation-top">
+                        <div class="d-sm-flex justify-content-between text-center">
+                            <div class="col-sm-4 text-center my-2 my-sm-0">
+                                <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span>  @Model.Comment.Count() Comments</p> 
+                            </div>
+                            <ul class="social-icons">
+                                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="navigation-area">
+                            <div class="row">
+                                @if (blogResprository.GetPost(prev) != null)
+                                {
+                                    <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                                        <div class="thumb">
+                                            <a href="#">
+
+                                                @{
+                                                    var imgprev = blogResprository.GetPost(prev).Image?? string.Empty;
+                                                    var pathprev = $"https://localhost:44349/api/FileManager/" + imgprev;
+                                                    <img class="img-fluid" src=@pathprev alt="" width="90">
+
+                                                }
+                                                @*<img class="img-fluid" src="~/hms/img/post/preview.png" alt="">*@
+                                            </a>
+                                        </div>
+                                        <div class="arrow">
+                                            <a asp-controller="Blog" asp-action="Post" asp-route-id="@prev">
+                                                <span class="lnr text-white ti-arrow-left"></span>
+                                            </a>
+                                        </div>
+                                        <div class="detials">
+                                            <p>Prev Post</p>
+                                            <a asp-controller="Blog" asp-action="Post" asp-route-id="@prev">
+                                                <span>@Html.Raw(blogResprository.GetPost(prev).Title)</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                                @if (blogResprository.GetPost(next) != null)
+                                {
+                                    <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                                        <div class="detials">
+                                            <p>Next Post</p>
+                                            <a asp-controller="Blog" asp-action="Post" asp-route-id="@next">
+                                                <span>@Html.Raw(blogResprository.GetPost(next).Title)</span>
+                                            </a>
+                                        </div>
+                                        <div class="arrow">
+                                            <a asp-controller="Blog" asp-action="Post" asp-route-id="@next">
+                                                <span class="lnr text-white ti-arrow-right"></span>
+                                            </a>
+                                        </div>
+                                        <div class="thumb">
+                                            <a href="#">
+                                                @{
+                                                    var imgnext = blogResprository.GetPost(next).Image ?? string.Empty;
+                                                    var pathnext = $"https://localhost:44349/api/FileManager/" + imgnext;
+                                                    <img class="img-fluid" src=@pathnext alt="" width="90">
+                                                }
+                                                @*<img class="img-fluid" src="~/hms/img/post/next.png" alt="">*@
+                                            </a>
+                                        </div>
+                                    </div>
+                                 }
+                                </div>
+                        </div>
+                    </div>
+                    <div class="blog-author">
+                        <div class="media align-items-center">
+                            <img src="~/hms/img/blog/author.png" />
+                            <div class="media-body">
+                                <a href="#">
+                                    <h4>@Model.Post.AuthorName</h4>
+                                </a>
+                                <p>
+                                    @Model.Post.AuthorQuote
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comments-area">
+                        <h4>@Model.Post.MainComments.Count() Comment</h4>
+                        <div class="comment-list">
+                            <div class="single-comment justify-content-between d-flex">
+                                <div class="user justify-content-between d-flex">
+                                    @foreach (var comment in Model.Comment)
+                                    {
+                                        <div class="thumb">
+                                            <img src="~/hms/img/comment/comment_1.png" alt="">
+                                        </div>
+                                        <div class="desc">
+                                            <p class="comment">
+                                                @comment.Message
+                                            </p>
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex align-items-center">
+                                                    <h5>
+                                                        <a href="#">@comment.Name</a>
+                                                    </h5>
+                                                    <p class="date">@comment.DateTime </p>
+                                                </div>
+                                                <div class="reply-btn">
+                                                    <a href="#" class="btn-reply text-uppercase" id="@comment.MainCommentId">reply</a>
+                                                    <form class="form-contact comment_form" asp-action="Comment" asp-controller="Blog" id="commentForm">
+                                                        <input type="hidden" name="PostId" value="@Model.Post.Id" />
+                                                        <input type="hidden" id="MainCommentId" name="MainCommentId" value="@comment.MainCommentId" />
+                                                        <div class="@comment.MainCommentId"></div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-form">
+                        <h4>Leave a Reply</h4>
+                        <form class="form-contact comment_form" asp-action="Comment" asp-controller="Blog" id="commentForm">
+                            <input type="hidden" name="PostId" value="@Model.Post.Id" />
+                            <input type="hidden" name="MainCommentId" value="0" />
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control w-100" name="Message" id="comment" cols="30" rows="9"
+                                                  placeholder="Write Comment"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input class="form-control" name="Name" id="name" type="text" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input class="form-control" name="Email" id="email" type="email" placeholder="Email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================Blog Area =================-->
+    <!-- footer -->
+    <footer class="footer">
+        <div class="footer_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 col-lg-3">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                address
+                            </h3>
+                            <p class="footer_text">
+                                200, Green road, Mongla, <br>
+                                New Yor City USA
+                            </p>
+                            <a href="#" class="line-button">Get Direction</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 col-lg-3">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                Reservation
+                            </h3>
+                            <p class="footer_text">
+                                +10 367 267 2678 <br>
+                                reservation@transyvalnia.com
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-6 col-lg-2">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                Navigation
+                            </h3>
+                            <ul>
+                                <li><a class="active" asp-action="Index" asp-controller="Home">Transylvania</a></li>
+                                <li><a href="/#about">About</a></li>
+                                <li><a asp-action="Index" asp-controller="Room">Room</a></li>
+                                <li><a asp-action="Index" asp-controller="Contact">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6 col-lg-4">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                Newsletter
+                            </h3>
+                            <form action="#" class="newsletter_form">
+                                <input type="text" placeholder="Enter your mail">
+                                <button type="submit">Sign Up</button>
+                            </form>
+                            <p class="newsletter_text">Subscribe newsletter to get updates</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy-right_text">
+            <div class="container">
+                <div class="footer_border"></div>
+                <div class="row">
+                    <div class="col-xl-8 col-md-7 col-lg-9">
+                        <p class="copy_right">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script>
+                    </div>
+                    <div class="col-xl-4 col-md-5 col-lg-3">
+                        <div class="socail_links">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-facebook-square"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- JS here -->
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/hms/js/bootstrap.min.js"></script>
+    <script src="~/hms/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="~/hms/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="~/hms/js/popper.min.js"></script>
+    <script src="~/hms/js/owl.carousel.min.js"></script>
+    <script src="~/hms/js/isotope.pkgd.min.js"></script>
+    <script src="~/hms/js/ajax-form.js"></script>
+    <script src="~/hms/js/waypoints.min.js"></script>
+    <script src="~/hms/js/jquery.counterup.min.js"></script>
+    <script src="~/hms/js/imagesloaded.pkgd.min.js"></script>
+    <script src="~/hms/js/scrollIt.js"></script>
+    <script src="~/hms/js/jquery.scrollUp.min.js"></script>
+    <script src="~/hms/js/wow.min.js"></script>
+    <script src="~/hms/js/nice-select.min.js"></script>
+    <script src="~/hms/js/jquery.slicknav.min.js"></script>
+    <script src="~/hms/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/hms/js/plugins.js"></script>
+    <script src="~/hms/js/gijgo.min.js"></script>
+
+    <!--contact js-->
+    <script src="~/hms/js/contact.js"></script>
+    <script src="~/hms/js/jquery.ajaxchimp.min.js"></script>
+    <script src="~/hms/js/jquery.form.js"></script>
+    <script src="~/hms/js/jquery.validate.min.js"></script>
+    <script src="~/hms/js/mail-script.js"></script>
+
+    <script src="~/hms/js/main.js"></script>
+    <script>
+        $('#datepicker').datepicker({
+            iconsLibrary: 'fontawesome',
+            icons: {
+                rightIcon: '<span class="fa fa-caret-down"></span>'
+            }
+        });
+        $('#datepicker2').datepicker({
+            iconsLibrary: 'fontawesome',
+            icons: {
+                rightIcon: '<span class="fa fa-caret-down"></span>'
+            }
+
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+           var appHtml =`
+                      
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control w-100" name="Message" id="comment" cols="30" rows="9"
+                                                  placeholder="Write Comment"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input class="form-control" name="Name" id="name" type="text" placeholder="Name">
+                                    </div>
+                                </div>
+                               <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input class="form-control" name="Email" id="email" type="text" placeholder="Email">
+                                    </div>
+                                </div>
+                            </div>
+                         <button type="submit" class=" button button-contact Form btn_1 boxed-btn">Send Message</button>
+                            `;
+            $("a").click(function () {
+                var aId = $(this).attr("id");
+                $("#MainCommentId").val = aId;
+                $("." + aId).html(appHtml);
+                $("." + aId + ".button").show();
+            });
+
+            $(".button.button-contact.boxed-btn").click(function () {
+                $("." + aId).hide();
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
+<!-- footer_end -->
+<!-- form itself end-->
+<!-- form itself end -->

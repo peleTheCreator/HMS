@@ -1,0 +1,56 @@
+﻿@model ProductOrderCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutInventory.cshtml";
+}
+
+<h1>Create</h1>
+<h4>ProductOrder</h4>
+<hr/>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label hidden asp-for="Number" class="control-label"></label>
+                <input hidden asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductId" class=" control-label form-label">Product</label>
+                <select asp-for="ProductId" class="col-sm-12" asp-items="ViewBag.productid"></select>
+                <span asp-validation-for="ProductId" class="text-danger col-sm-12 "></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input id="qty" asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    var kay = document.querySelector("#qty")
+    var des = document.querySelector("#cst")
+    var pele = document.getElementById("tot")
+    kay.addEventListener("change", function () {
+        des.addEventListener("input", function () {
+            var sed = kay.value * des.value
+            pele.value = sed;
+        })
+    })
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

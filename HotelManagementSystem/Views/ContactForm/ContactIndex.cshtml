@@ -1,0 +1,171 @@
+﻿@model List<UserContact>
+
+@{
+    ViewData["Title"] = "Clients Contact";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="~/inv/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <!--datatables.net-->
+    <link href="~/inv/lib/DataTables/datatables.min.css" rel="stylesheet" />
+    <!--datatables.net-->
+    <!--jquery numpad-->
+    <link href="~/inv/lib/jquerey-numpad/jquery.numpad.css" rel="stylesheet" />
+    <!--jquery numpad-->
+    <!--toastr-->
+    <link href="~/inv/lib/toastr/toastr.css" rel="stylesheet" />
+    <!--toastr-->
+    <link href="~/inv/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light text-white  border-bottom box-shadow mb-3" style="background-color:maroon">
+            <div class="container">
+                <a class="text-white text-lg  navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Transylvania</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="ContactForm" asp-action="ContactIndex">Clients Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <partial name="_CookieConsentPartial" />
+        <main role="main" class="pb-3">
+            <form asp-controller="ContactForm" asp-action="ContactIndex" method="post">
+                <table class="table" id="grid">
+                    <thead>
+                        <tr>
+                            <th>
+                                DateTime
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Subject
+                            </th>
+                            <th>
+                                ReplyMessage
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                @if (!item.Reply)
+                                {
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DateTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        <div style="display:none">
+                                            @item.Message
+                                        </div>
+                                        <button type="button" class="btn" style="background-color:white"  data-toggle="popover" 
+                                           data-content="@item.Message" title="@item.Subject">@item.Subject</button>
+                                    </td>
+                                    <td>
+                                        <input asp-for="@item.ReplyMessage" style="width:auto" />
+                                    </td>
+                                    <td>
+                                        <button id="@item.UserContactId" class="btn" data-msg="@item.Message" data-email="@item.Email"
+                                                style="background-color:maroon; width:auto">
+                                            Send
+                                        </button>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            Copyright © @DateTime.Now.Year <a> Hotel Management System.</a> All rights reserved.
+        </div>
+    </footer>
+    <script src="~/inv/lib/jquery/dist/jquery.js"></script>
+
+    <script src="~/inv/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+
+    <!--datatables.net-->
+    <script src="../inv/lib/DataTables/datatables.min.js"></script>
+    <!--datatables.net-->
+    <!--axios-->
+    <script src="../inv/lib/axios/axios.min.js"></script>
+    <!--axios-->
+    <!--jquery numpad-->
+    <script src="../inv/lib/jquerey-numpad/jquery.numpad.js"></script>
+    <!--jquery numpad-->
+    <!--toastr-->
+    <script src="../inv/lib/toastr/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#grid').DataTable();
+        });
+
+    </script>
+    <script>
+
+        $(document).ready(function () {         
+            $("button").click(function () {
+                var btnid = $(this).attr("id");
+                var email = $("#" + btnid).attr("data-email");
+                var msg = $("#" + btnid).attr("data-msg");
+                debugger;
+                $.ajax({
+                    url: "/ContactForm/SendContactMsg",
+                    method: "GET",
+                    data: { Email: email, Message: msg, ContactId: btnid },
+                    success: function (result) {
+                        if (result) {
+                            alert("message was sent succesfully");
+                            console.log("sendcontactmsg");
+                            debugger;
+                            window.location = "/ContactForm/ContactIndex";
+                        }
+                        else {
+                            debugger;
+                            window.location = "/ContactForm/ContactIndex";
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            });
+        });
+    </script>
+    <script src="~/inv/js/site.js"></script>
+</body>
+</html>
+
+        

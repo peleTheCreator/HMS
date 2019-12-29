@@ -1,0 +1,29 @@
+﻿@model List<string>
+
+<div class="features_room">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="section_title text-center mb-100">
+                    <span>Gallery</span>
+                    <h3>Life inside Transylvalnia</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    @foreach (var img in Model)
+    {
+        <div class="rooms_here">
+            <div class="single_rooms">
+                <div class="room_thumb">
+                    <img src=@img alt="">
+                    <div class="room_heading d-flex justify-content-between align-items-center">
+                        <div class="room_heading_inner">
+                        </div>
+                        <a href="#" class="line-button"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

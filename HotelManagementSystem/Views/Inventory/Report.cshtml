@@ -1,0 +1,157 @@
+﻿@model ReportViewModels
+
+@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Views/Shared/_LayoutInventory.cshtml";
+}
+<h4 class="m-t-0 header-title">Sales Report</h4>
+<form asp-controller="Inventory" asp-action="Report" method="post" class="mt-3">
+    <div class="col-md-4" style="float:right">
+        <h6>To</h6>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-prepend input-group">
+                    <span class="add-on input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="date" style="width:auto;" name="SalesReportReportTo" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="blk2" class="col-md-4 ">
+        <h6>From</h6>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-prepend input-group">
+                    <input type="date" style="width:auto" name="SalesReportReportFrom" />
+                    <span class="add-on input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding:10px"></div>
+    <div style="margin-left:0px" class="form-group row">
+        <div class="col-sm-8 ">
+            <button type="submit" class="btn" style="background-color:maroon;color:white">Generate Report</button>
+        </div>
+    </div>
+
+</form>
+
+@if (ViewBag.Report == "false")
+{
+    <table class="table" id="grid">
+        <thead>
+            <tr>
+                <th>
+                    SalesDate
+                </th>
+                <th>
+                    Product
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    QtySold
+                </th>
+                <th>
+                    QtyRemaining
+                </th>
+                <th>
+                    TotalSaleCostPerProduct
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OverallSaleReportViewModel.SalesReportViewModel)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SalesDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QtyPerSaleForProduct)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RemainingQty)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalSaleCostPerProduct)
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>TotalQtySold</td>
+                <td></td>
+                <td></td>
+                <td>@Model.OverallSaleReportViewModel.TotalSales</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>overalltotalsalecost</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>@Model.OverallSaleReportViewModel.overalltotalsalecost</td>
+            </tr>
+        </tbody>
+    </table>
+}
+else if (ViewBag.Report == "true")
+{
+    <table class="table" id="grid">
+        <thead>
+            <tr>
+                <th>
+                    Product
+                </th>
+                <th>
+                    TotalQty
+                </th>
+                <th>
+                    LastPurchaseDate
+                </th>
+                <th>
+                    QtyRemaining
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.WhiteBoardTables)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastPurchaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QtyRemaining)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#grid').DataTable();
+        });
+    </script>
+}

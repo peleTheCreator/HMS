@@ -1,0 +1,136 @@
+﻿@model PostViewModel
+
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title></title>
+    <link href="~/Trumbowyg-master/dist/ui/trumbowyg.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        hr{
+            border:solid;
+            border-width:1px;
+            border-color:maroon;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light text-white  border-bottom box-shadow mb-3" style="background-color:maroon">
+            <div class="container">
+                <a class="text-white text-lg  navbar-brand" asp-area="" asp-controller="BlogPanel" asp-action="Index" style="color:white">Blogger </a>
+            </div>
+        </nav>
+    </header>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input asp-for="Id" type="hidden" />
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input asp-for="Name" class="form-control" placeholder="Post Name"/>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input asp-for="AuthorName" class="form-control" placeholder="Author Name" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-group">
+                        <input asp-for="AuthorQuote" class="form-control" placeholder="Author Quote" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <label>Body:</label>
+                    <textarea id="editor" asp-for="Body"></textarea>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Image">Image</label>
+                    <input asp-for="CurrrentImage" type="hidden" />
+                    <input type="file" asp-for="Image" />
+                    @*<img src="@Url.Content(Model.CurrrentImage)" style="margin:10px" height="200" width="200" id="imagePreview" />
+                    <input type="file" name="ImageUpload" accept="image/jpeg, image/png" onchange="ShowImagePreview(this,document.getElementById('imagePreview'))" />*@
+                </div>
+            </div>
+        </div>
+        @*<div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Image">Image</label>
+                    <input asp-for="CurrrentImage" type="hidden" />
+                    <input type="file" asp-for="Image" />
+                </div>
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <span style="background-color:maroon; color:white; margin:auto">Search Engine Optimazation</span>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <textarea id="editor1" asp-for="Title"></textarea>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label asp-for="HeadLines"></label>
+                    <textarea id="editor2" asp-for="HeadLines"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" asp-for="Description"></label>
+                    <input class="form-control" asp-for="Description" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" asp-for="Tags"></label>
+                    <input asp-for="Tags" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" asp-for="Categories"></label>
+                    <select class="form-control" asp-for="Categories">
+                        <option>Hotel</option>
+                        <option>Travel</option>
+                        <option>Fashion</option>
+                        <option>Life</option>
+                        <option>Home</option>
+                        <option>Party</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="Sumbit" style="background-color:maroon; color:white; position:absolute; left:45%; padding:10px" />
+    </form>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/Trumbowyg-master/dist/trumbowyg.js"></script>
+
+    <script>
+        $('#editor').trumbowyg();
+        $('#editor1').trumbowyg();
+        $('#editor2').trumbowyg();
+
+    </script>
+</body>
+</html>

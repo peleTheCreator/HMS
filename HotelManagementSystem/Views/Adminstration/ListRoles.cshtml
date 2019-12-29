@@ -1,0 +1,161 @@
+﻿@model IEnumerable<IdentityRole>
+
+@{
+    ViewBag.Title = "All Roles";
+}
+
+<div class="container-padding">
+    <a asp-action="CreateRole" asp-controller="Adminstration"
+       class="btn btn-primary mb-3" style="background-color:maroon;width:auto">
+        Add new role
+    </a>
+</div>
+<div class="container-padding">
+    <!-- Start Row -->
+    <div class="row">
+        <!-- Start Panel -->
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-title">
+                    All Roles
+                </div>
+                <div class="panel-body table-responsive">
+                    <table id="example0" class="table-bordered display">
+                        <thead>
+                            <tr>
+                                <th>RoleID</th>
+                                <th> RoleName</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Any())
+                            {
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            <form method="post" asp-action="DeleteRole" asp-route-id="@item.Id">
+                                                <a asp-action="EditRole" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a> |
+                                                <span id="confirmDeleteSpan_@item.Id" style="display:none">
+                                                    <span>Are you sure you want to delete?</span>
+                                                    <button type="submit" class="btn btn-danger">Yes</button>
+                                                    <a href="#" class="btn btn-primary"
+                                                       onclick="confirmDelete('@item.Id', false)">No</a>
+                                                </span>
+
+                                                <span id="deleteSpan_@item.Id">
+                                                    <a href="#" 
+                                                       onclick="confirmDelete('@item.Id', true)"><i class="fa fa-cut"></i></a>
+                                                </span>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    @if (!Model.Any())
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                No roles created yet
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Use the button below to create a role
+                                </h5>
+                                <a class="btn btn-primary" style="background-color:maroon;width:auto"
+                                   asp-controller="Adminstration" asp-action="CreateRole">
+                                    Create Role
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- End Panel -->
+    </div>
+    <!-- End Row -->
+</div>
+<script>
+    function confirmDelete(uniqueId, isTrue) {
+
+        var deleteSpan = 'deleteSpan_' + uniqueId;
+        var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+        if (isTrue) {
+            $('#' + deleteSpan).hide();
+            $('#' + confirmDeleteSpan).show();
+        } else {
+            $('#' + deleteSpan).show();
+            $('#' + confirmDeleteSpan).hide();
+        }
+    }
+</script>
+
+
+@section Scripts{
+    <!-- ================================================
+    Data Tables
+    ================================================ -->
+    <script src="~/js/datatables/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example0').DataTable();
+        });</script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#example').DataTable({
+                "columnDefs": [
+                    { "visible": false, "targets": 2 }
+                ],
+                "order": [[2, 'asc']],
+                "displayLength": 25,
+                "drawCallback": function (settings) {
+                    var api = this.api();
+                    var rows = api.rows({ page: 'current' }).nodes();
+                    var last = null;
+
+                    api.column(2, { page: 'current' }).data().each(function (group, i) {
+                        if (last !== group) {
+                            $(rows).eq(i).before(
+                                '<tr class="group"><td colspan="5">' + group + '</td></tr>'
+                            );
+
+                            last = group;
+                        }
+                    });
+                }
+            });
+
+            // Order by the grouping
+            $('#example tbody').on('click', 'tr.group', function () {
+                var currentOrder = table.order()[0];
+                if (currentOrder[0] === 2 && currentOrder[1] === 'asc') {
+                    table.order([2, 'desc']).draw();
+                }
+                else {
+                    table.order([2, 'asc']).draw();
+                }
+            });
+        });
+
+        $('#DeleteModal').on('show.bs.modal', function (e) {
+
+            //get data-id attribute of the clicked element
+            var roomID = $(e.relatedTarget).data('room-id');
+            var roomNumber = $(e.relatedTarget).data('room-number');
+            var deleteMessage = "Are you sure you want to delete room with room no: " + roomNumber + "?";
+            $('#DeleteConfirmation').html(deleteMessage);
+            $(e.currentTarget).find('input[name="id"]').val(roomID);
+        });</script>
+}

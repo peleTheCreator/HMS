@@ -1,0 +1,84 @@
+﻿@model List<SalesOrderIndexViewModel>
+@{
+    ViewData["Title"] = "SalesOrder";
+    Layout = "~/Views/Shared/_LayoutInventory.cshtml";
+    var i = 0;
+    var j = 1;
+    var errors = ViewBag.Error as List<string>;
+}
+
+<h1>@ViewData["Title"]</h1>
+@if (errors.Count() != 0)
+{
+    <div>
+        <ul>
+            @for (int k = 0; k < errors.Count(); k++)
+            {
+                <li>@errors[k]</li>
+            }
+        </ul>
+    </div>
+}
+
+
+<form asp-controller="SalesOrder" asp-action="Index" method="post">
+    <table class="table" id="grid">
+        <thead>
+            <tr>
+                <th>
+                    Number
+                </th>
+                <th>
+                    Product
+                </th>
+                <th>
+                    Selling Price
+                </th>
+                <th>
+                    Sales
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prod in Model)
+            {
+                <tr>
+                    <td>
+                        @j
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => prod.ProductName)
+                    <td>
+                        @Html.DisplayFor(modelItem => prod.Price)
+                    </td>
+                    <td>
+                        <input asp-for=@Model[i].Sales class="form-control" placeholder="enter the quality sold" size="5" />
+                        <span asp-validation-for="@Model[i].Sales"></span>
+                        <input hidden name="ProductId" value="@Model[i].ProuctId" class="form-control" />
+                    </td>
+                    @if (i < Model.Count())
+                    {
+                        i++;
+                        j++;
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn " style="background-color:maroon; color:white"
+                   onclick="return confirm('Please Confirm Your Sales Before Pressing Ok??')" >
+            Create</button>
+
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#grid').DataTable();
+        });
+    </script>
+}
+

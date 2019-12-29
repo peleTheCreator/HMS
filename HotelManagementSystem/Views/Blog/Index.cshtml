@@ -1,0 +1,471 @@
+﻿@model BlogIndexViewModel
+@{
+    Layout = null;
+}
+@*<h2>Home Page</h2>
+<img src="~/~/hms/img/example1.jpg" width="500" />
+<div>
+    <ul>
+        @foreach (var post in Model)
+        {
+            var image_path = $"/image/{post.Image}";
+            <li>
+                <a asp-controller="Blog" asp-action="Post" asp-route-id="@post.Id">
+                    <img src="@image_path" width="500" />
+
+                    @post.Title
+                </a>
+            </li>
+        }
+    </ul>
+</div>*@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Transylvania</title>
+    <meta name="Title" content="Hotel Bloggging Travel">
+    <meta name="description" content="Hotel Transylvania Laxaries, We Blog EveryThing">
+    <meta name="keywords" content="Travel Hotel Luxury Home Resturant Happy">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <link rel="manifest" href="site.webmanifest"> -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/hms/img/favicon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- CSS here -->
+    <link href="~/hms/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/hms/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/hms/css/magnific-popup.css" rel="stylesheet" />
+    <link href="~/hms/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/hms/css/themify-icons.css" rel="stylesheet" />
+    <link href="~/hms/css/nice-select.css" rel="stylesheet" />
+    <link href="~/hms/css/flaticon.css" rel="stylesheet" />
+    <link href="~/hms/css/gijgo.css" rel="stylesheet" />
+    <link href="~/hms/css/animate.css" rel="stylesheet" />
+    <link href="~/hms/css/slicknav.css" rel="stylesheet" />
+    <link href="~/hms/css/style.css" rel="stylesheet" />
+
+    <!-- <link rel="stylesheet" href="~/hms/css/responsive.css"> -->
+</head>
+<body>
+    <header>
+        <div class="header-area ">
+            <div id="sticky-header" class="main-header-area">
+                <div class="container-fluid p-0">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col-xl-5 col-lg-6">
+                            <div class="main-menu  d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a asp-controller="Blog" asp-action="Home">Home</a></li>
+                                        <li><a asp-controller="Blog" asp-action="Home">About</a></li>
+                                        <li><a asp-controller="Blog" asp-action="Room">Rooms</a></li>
+                                        <li><a asp-controller="Blog" asp-action="Contact">Contact</a></li>
+                                        <li><a asp-controller="Blog" asp-action="Photo">Photo</a></li>
+                                        <li><a class="active" asp-controller="Blog" asp-action="Index">blog</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-4 d-none d-lg-block">
+                            <div class="book_room">
+                                <div class="socail_links">
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-facebook-square"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-instagram"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header-end -->
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg">
+        <h3>TransylVania blog</h3>
+    </div>
+    <!-- bradcam_area_end -->
+    <!--================Blog Area =================-->
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <div class="blog_left_sidebar">
+                        @foreach (var post in Model.Postmodel.Post)
+                        {
+                            @if (!String.IsNullOrEmpty(post.Image))
+                            {
+                                var path = $"https://localhost:44349/api/FileManager/"+post.Image;
+
+                                <article class="blog_item">
+                                    <div class="blog_item_img">
+                                        <img class="card-img rounded-0" src=@path alt="" width="500">
+                                        <a href="#" class="blog_item_date">
+                                            <h3>@post.DateCreated.Day</h3>
+                                            <p>@post.DateCreated.Month</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="blog_details">
+                                        <a class="d-inline-block" asp-controller="Blog" asp-action="Post" asp-route-id="@post.Id">
+                                            <h2>@Html.Raw(post.Title)</h2>
+                                        </a>
+                                        <p>
+                                            @Html.Raw(post.HeadLines)
+                                        </p>
+                                        <ul class="blog-info-link">
+                                            <li><a href="#"><i class="fa fa-user"></i>@post.Categories</a></li>
+                                            <li><a href="#"><i class="fa fa-comments"></i> @post.MainComments.Count() Comments</a></li>
+                                        </ul>
+                                    </div>
+                                </article>
+                             }
+                         }
+                                 
+                            <nav class="blog-pagination justify-content-center d-flex">
+                                <ul class="pagination">
+                                    @if(Model.Postmodel.PageNumber > 1)
+                                    {
+
+                                    <li class="page-item">
+                                        <a asp-controller="Blog" asp-action="Index" asp-route-pagenumber="@(Model.Postmodel.PageNumber-1)" 
+                                         asp-route-Category="@Model.Postmodel.Category" asp-route-search="@Model.Postmodel.search" class="page-link" aria-label="Previous">
+                                            <i class="ti-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    }
+                                    @for(int i=1; i<Model.Postmodel.PageCount; i++)
+                                    {
+                                    <li class="page-item">
+                                        <a asp-controller="Blog" asp-action="Index" asp-route-pagenumber="@i" 
+                                        asp-route-Category="@Model.Postmodel.Category" asp-route-search="@Model.Postmodel.search"
+                                         class=" @(i == Model.Postmodel.PageNumber ? "active" : "") page-link">@i</a>
+                                    </li>
+                                    }
+                                    @if (Model.Postmodel.CanGoNext)
+                                    {
+                                        
+                                    <li class="page-item">
+                                        <a asp-controller="Blog" asp-action="Index" asp-route-pagenumber="@(Model.Postmodel.PageNumber+1)"
+                                        asp-route-Category="@Model.Postmodel.Category" asp-route-search="@Model.Postmodel.search"
+                                        class="page-link" aria-label="Previous">
+                                            <i class="ti-angle-right"></i>
+                                        </a>
+                                    </li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+                        @*searching area*@
+                        <aside class="single_sidebar_widget search_widget">
+                            <form asp-controller="Blog" asp-action="Index" method="get">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <input type="hidden" name="Category" value="@Model.Postmodel.Category"/>
+                                        <input type="hidden" name="pagenumber" value="@Model.Postmodel.PageNumber"/>
+                                        <input type="text" class="form-control" name="search" placeholder='Search Keyword' value="@Model.Postmodel.search"
+                                               onfocus="this.placeholder = ''"
+                                               onblur="this.placeholder = 'Search Keyword'">
+                                        <div class="input-group-append">
+                                            <button class="btn" type="button"><i class="ti-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                        type="submit">
+                                    Search
+                                </button>
+                            </form>
+                        </aside>
+
+                        @*category area*@
+                        <aside class="single_sidebar_widget post_category_widget">
+                            <h4 class="widget_title">Category</h4>
+                            <ul class="list cat-list">
+                            @foreach(var cat in Model.Categories){ 
+                                <li>
+                                    <a asp-controller="Blog" asp-action="Index" asp-route-Category="@cat.Category" class="d-flex">
+                                        <p>@cat.Category</p>
+                                        <p>(@cat.CategoryCount)</p>
+                                    </a>
+                                </li>
+                            }
+                            </ul>
+                        </aside>
+                        @*recent post*@
+                        <aside class="single_sidebar_widget popular_post_widget">
+                            <h3 class="widget_title">Recent Post</h3>
+                            @foreach (var recentpost in Model.Postmodel.Post.OrderByDescending(p => p.Id).Take(5).ToList())
+                            {
+
+                                var path = $"https://localhost:44349/api/FileManager/" + recentpost.Image;
+                            <div class="media post_item">
+                                <img src=@path alt="post" width="100">
+                                <div class="media-body">
+                                    <a href="single-blog.html">
+                                        <h3>@recentpost.Name</h3>
+                                    </a>
+                                    @{
+                                        var dateNow = DateTime.Now;
+                                        var ThedateEndDaynow = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 23, 59, 59);
+                                    }
+                                    @if (recentpost.DateCreated <= ThedateEndDaynow)
+                                    {
+                                        var time = dateNow.Subtract(recentpost.DateCreated);
+                                        if (time.Hours == 0)
+                                        {
+                                            <p>@time.Minutes minutes ago</p>
+                                        }
+                                        else
+                                        {
+                                            <p>@time.Hours Hours ago</p>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>@recentpost.DateCreated.Date</p>
+                                    }
+                                </div>
+                            </div>
+                            }
+                        </aside>
+                        @*tag cloud*@
+                        <aside class="single_sidebar_widget tag_cloud_widget">
+                            <h4 class="widget_title">Tag Clouds</h4>
+                            <ul class="list">
+                                @foreach (var tag in Model.Tags)
+                                {
+                                <li>
+                                    <a href="#">@tag</a>
+                                </li>                                
+                                }
+                            </ul>
+                        </aside>
+
+                        @*instagram feed*@
+                        <aside class="single_sidebar_widget instagram_feeds">
+                            <h4 class="widget_title">Instagram Feeds</h4>
+                            <ul class="instagram_row flex-wrap">
+                                <li>
+                                    <a href="#">
+                                        <img class="img-fluid" src="~/hms/img/post/post_5.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img class="img-fluid" src="~/hms/img/post/post_6.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img class="img-fluid" src="~/hms/img/post/post_7.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img class="img-fluid" src="~/hms/img/post/post_8.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img class="img-fluid" src="~/hms/img/post/post_9.png" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img class="img-fluid" src="~/hms/img/post/post_10.png" alt="">
+                                    </a>
+                                </li>
+                            </ul>
+                        </aside>
+
+                        @*newsletter*@
+                        <aside class="single_sidebar_widget newsletter_widget">
+                            <h4 class="widget_title">Newsletter</h4>
+
+                            <form action="#">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" onfocus="this.placeholder = ''"
+                                           onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
+                                </div>
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                        type="submit">
+                                    Subscribe
+                                </button>
+                            </form>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================Blog Area =================-->
+    <!-- footer -->
+    <footer class="footer">
+        <div class="footer_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 col-lg-3">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                address
+                            </h3>
+                            <p class="footer_text">
+                                200, Green road, Mongla, <br>
+                                New Yor City USA
+                            </p>
+                            <a href="#" class="line-button">Get Direction</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 col-lg-3">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                Reservation
+                            </h3>
+                            <p class="footer_text">
+                                +10 367 267 2678 <br>
+                                reservation@transyvalnia.com
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-6 col-lg-2">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                Navigation
+                            </h3>
+                            <ul>
+                                <li><a class="active" asp-action="Index" asp-controller="Home">Transylvania</a></li>
+                                <li><a href="/#about">About</a></li>
+                                <li><a asp-action="Index" asp-controller="Room">Room</a></li>
+                                <li><a asp-action="Index" asp-controller="Contact">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6 col-lg-4">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                Newsletter
+                            </h3>
+                            <form action="#" class="newsletter_form">
+                                <input type="text" placeholder="Enter your mail">
+                                <button type="submit">Sign Up</button>
+                            </form>
+                            <p class="newsletter_text">Subscribe newsletter to get updates</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy-right_text">
+            <div class="container">
+                <div class="footer_border"></div>
+                <div class="row">
+                    <div class="col-xl-8 col-md-7 col-lg-9">
+                        <p class="copy_right">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script>
+                    </div>
+                    <div class="col-xl-4 col-md-5 col-lg-3">
+                        <div class="socail_links">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-facebook-square"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- JS here -->
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/hms/js/bootstrap.min.js"></script>
+    <script src="~/hms/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="~/hms/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="~/hms/js/popper.min.js"></script>
+    <script src="~/hms/js/owl.carousel.min.js"></script>
+    <script src="~/hms/js/isotope.pkgd.min.js"></script>
+    <script src="~/hms/js/ajax-form.js"></script>
+    <script src="~/hms/js/waypoints.min.js"></script>
+    <script src="~/hms/js/jquery.counterup.min.js"></script>
+    <script src="~/hms/js/imagesloaded.pkgd.min.js"></script>
+    <script src="~/hms/js/scrollIt.js"></script>
+    <script src="~/hms/js/jquery.scrollUp.min.js"></script>
+    <script src="~/hms/js/wow.min.js"></script>
+    <script src="~/hms/js/nice-select.min.js"></script>
+    <script src="~/hms/js/jquery.slicknav.min.js"></script>
+    <script src="~/hms/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/hms/js/plugins.js"></script>
+    <script src="~/hms/js/gijgo.min.js"></script>
+
+    <!--contact js-->
+    <script src="~/hms/js/contact.js"></script>
+    <script src="~/hms/js/jquery.ajaxchimp.min.js"></script>
+    <script src="~/hms/js/jquery.form.js"></script>
+    <script src="~/hms/js/jquery.validate.min.js"></script>
+    <script src="~/hms/js/mail-script.js"></script>
+
+    <script src="~/hms/js/main.js"></script>
+    <script>
+        $('#datepicker').datepicker({
+            iconsLibrary: 'fontawesome',
+            icons: {
+                rightIcon: '<span class="fa fa-caret-down"></span>'
+            }
+        });
+        $('#datepicker2').datepicker({
+            iconsLibrary: 'fontawesome',
+            icons: {
+                rightIcon: '<span class="fa fa-caret-down"></span>'
+            }
+
+        });
+    </script>
+</body>
+
+</html>
+<!-- footer_end -->
+<!-- form itself end-->
+<!-- form itself end -->

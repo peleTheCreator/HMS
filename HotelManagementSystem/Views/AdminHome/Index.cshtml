@@ -1,0 +1,216 @@
+﻿@model DashBorard
+<head>
+    @section chartsScripts{
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    }
+</head>
+<style>
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 2px;
+    }
+
+    .pd-20 {
+        padding: 20px;
+    }
+</style>
+
+<div class="row row-sm mg-t-15 mg-sm-t-20">
+    <div class="col-lg-4">
+        <div class="card">
+            <div id="map1"></div>
+            <div class="pd-20">
+                <h4 class="tx-inverse tx-14">Room Booked Today : @Model.TotalRoomBookedForToday</h4>
+                <h5 class="tx-inverse tx-14">#@Model.TotalFeesForTheDay</h5>
+                <div class="d-flex">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mg-t-15 mg-sm-t-20 mg-lg-t-0">
+        <div class="card">
+            <div id="map1"></div>
+            <div class="pd-20">
+                <h4 class="tx-inverse tx-14">Room Booked Week : @Model.TotalRoomBookedForTheWeek</h4>
+                <h5 class="tx-inverse tx-14">#@Model.TotalFeesForTheWeek</h5>
+                <div class="d-flex">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mg-t-15 mg-sm-t-20 mg-lg-t-0">
+        <div class="card">
+            <div id="map1"></div>
+            <div class="pd-20">
+                <h4 class="tx-inverse tx-14">Room Booked Month : @Model.TotalRoomBookedForTheMonth</h4>
+                <h5 class="tx-inverse tx-14">#@Model.TotalFeesForTheMonth</h5>
+                <div class="d-flex">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin:10px">
+
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                url: "/VisualData/Data1",
+                success: function (result) {
+
+                    debugger
+                    console.log(result);
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                }
+            });
+            function drawChart(result) {
+                var data = new google.visualization.DataTable();
+                //data.addColumn('string', 'Room');
+                //data.addColumn('number', 'Total Booked');
+                data.addColumn('string', 'Room');
+                data.addColumn('number', 'Booking');
+
+                var dataArray = [];
+
+                $.each(result, function (i, obj) {
+                    dataArray.push([obj.room, obj.totalPerRoomBookedForTheDay]);
+                });
+                data.addRows(dataArray);
+                console.log(dataArray);
+
+                var columnChartOptions = {
+                    title: "Booking summary For Rooms Today",
+                    width: 1040,
+                    height: 400,
+                    bar: { groupWidth: "20%" },
+                };
+
+                var columnChart = new google.visualization.ColumnChart(document
+                    .getElementById('linechart_div'));
+
+                columnChart.draw(data, columnChartOptions);
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                url: "/VisualData/Data2",
+                success: function (result) {
+
+                    debugger
+                    console.log(result);
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                }
+            });
+            function drawChart(result) {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Room');
+                data.addColumn('number', 'Booking');
+
+                var dataArray = [];
+
+                $.each(result, function (i, obj) {
+                    dataArray.push([obj.room, obj.totalPerRoomBookedForTheWeek]);
+                });
+                data.addRows(dataArray);
+                console.log(dataArray);
+
+                var columnChartOptions = {
+                    title: "Booking summary For Rooms Week",
+                    width: 1040,
+                    height: 400,
+                    bar: { groupWidth: "20%" },
+                };
+
+                var columnChart = new google.visualization.LineChart(document
+                    .getElementById('columchart'));
+
+                columnChart.draw(data, columnChartOptions);
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                url: "/VisualData/Data3",
+                success: function (result) {
+
+                    debugger
+                    console.log(result);
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                }
+            });
+            function drawChart(result) {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Room');
+                data.addColumn('number', 'Booking');
+
+                var dataArray = [];
+
+                $.each(result, function (i, obj) {
+                    dataArray.push([obj.room, obj.totalPerRoomBookedForMonth]);
+                });
+                data.addRows(dataArray);
+                console.log(dataArray);
+
+                var columnChartOptions = {
+                    title: "Booking summary For Rooms Month",
+                    width: 1040,
+                    height: 400,
+                    bar: { groupWidth: "20%" },
+                };
+
+                var columnChart = new google.visualization.PieChart(document
+                    .getElementById('PieChart'));
+
+                columnChart.draw(data, columnChartOptions);
+            }
+        });
+    </script>
+
+
+}
+<div id="linechart_div"></div>
+<div id="columchart"></div>
+<div id="PieChart"></div>
+
+

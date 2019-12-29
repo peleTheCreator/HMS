@@ -1,0 +1,186 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@using HotelManagementSystem.Entities
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserMananager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hotel Management System is a software system designed to manage your Hotel.">
+    <title>Hotel Management System</title>
+    @RenderSection("chartsScripts", required: false);
+</head>
+<body style="background-color:maroon">
+    <div class="loading"><img src="~/img/loading.gif" alt="loading-img"></div>
+    <link href="~/FAwe/fontawesome.css" rel="stylesheet" />
+    <link href="~/FAwe/solid.css" rel="stylesheet" />
+    <link href="~/css/root.css" rel="stylesheet">
+
+    <div id="top" style="background-color:maroon" class="clearfix bg-dark ">
+        <div class="applogo">
+            <a asp-controller="Home" asp-action="Index" class="logo">Transylvania</a>
+        </div>
+        <a href="#" class="sidebar-open-button"><i class="fa fa-bars"></i></a>
+        <a href="#" class="sidebar-open-button-mobile"><i class="fa fa-bars"></i></a>
+        <form class="searchform">
+            <input type="text" class="searchbox" id="searchbox" placeholder="Search">
+            <span class="searchbutton"><i class="fa fa-search"></i></span>
+        </form>
+        @*app shortcut*@
+
+        <a href="#sidepanel" class="sidepanel-open-button" data-toggle="modal" data-target=".js-modal-messenger"><i class="fa fa-outdent"></i></a>
+        <ul class="top-right">
+            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Desk")))
+            {
+                <li class="dropdown link">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle hdbutton">Create New <span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-list">
+                        <li><a asp-action="Create" asp-controller="Room"><i class="fa falist fa-bed"></i>Room</a></li>
+                        <li><a asp-action="Create" asp-controller="RoomType"><i class="fa falist fa-folder-open"></i>Room Category</a></li>
+                        <li><a asp-action="Create" asp-controller="Features"><i class="fa falist fa-check-square-o"></i>Feature</a></li>
+                        <li><a asp-action="Create" asp-controller="Bookings"><i class="fa falist fa-calendar"></i>Booking</a></li>
+                    </ul>
+                </li>
+            }
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li class="dropdown link">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle hdbutton">
+                        @User.Identity.Name
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-list">
+                        <li>
+                            <a asp-action="ChangePassWord" asp-controller="Account" style=" padding-left:20px;background-color:white; color:#404B5F; font-style:italic"
+                               class="nav-link btn btn-link py-0 text-black-50">
+                                ChangePassword
+                            </a>
+                        </li>
+                        <li>
+                            <form method="post" asp-controller="account" asp-action="logout">
+                                <button type="submit" style="width:inherit; background-color:white; color:#404B5F; font-style:italic "
+                                        class="nav-link btn btn-link py-0 text-black-50">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <a class="badge notification-count bg-white" id="notificationCount" data-toggle="popover" title="Notification"></a>
+            }
+        </ul>
+    </div>
+
+    <div class="sidebar clearfix sidebar-colorful" style="background-color:maroon">
+        <ul class="sidebar-panel nav">
+            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
+            {
+                <li>
+                    <a asp-action="index" asp-controller="AdminHome"><span class="icon color1"><i class="fa fa-university"></i></span>DashBoard</a>
+                </li>
+            }
+            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Desk")))
+            {
+                <li>
+                    <a asp-action="index" asp-controller="room"><span class="icon color7"><i class="fa fa-bed"></i></span>Rooms</a>
+                </li>
+                <li>
+                    <a asp-action="index" asp-controller="roomtype"><span class="icon color2"><i class="fa fa-folder-open"></i></span>Room Categories</a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Bookings" data-toggle="tooltip"><span class="icon color3"><i class="fa fa-calendar"></i></span>Bookings</a>
+                </li>
+                <li>
+                    <a asp-action="index" asp-controller="features"><span class="icon color7"><i class="fa fa-binoculars"></i></span>Features</a>
+                </li>
+                <li>
+                    <a asp-action="index" asp-controller="images"><span class="icon color1"><i class="fa fa-image"></i></span>Media</a>
+                </li>
+                <li>
+                    <a asp-action="ContactIndex" asp-controller="ContactForm"><span class="icon color1"><i class="fa fa-user"></i></span>Contacts</a>
+                </li>
+
+            }
+            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Blogger")))
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="icon color10"><i class="fa fa-book"></i></span>Blogger
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background-color:maroon">
+                        <a class="dropdown-item bg-dark" asp-controller="BlogPanel"
+                           asp-action="Index">Home</a>
+                        <a class="dropdown-item bg-dark" asp-controller="BlogPanel"
+                           asp-action="Edit">CreatePost</a>
+                    </div>
+                </li>
+            }
+            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("StoreKeeper")))
+            {
+                <li>
+                    <a asp-action="index" asp-controller="Product"><span class="icon color1"><i class="fa fa-th"></i></span>Manage Inventory</a>
+                </li>
+            }
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li>
+                    <a asp-action="SendEmail" asp-controller="Email"><span class="icon color1"><i class="fa fa-envelope"></i></span>Messenger</a>
+                </li>
+
+            }
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <li><a asp-action="Index" asp-controller="Report"><span class="icon color11"><i class="fa fa-calculator"></i></span>Report</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="icon color10"><i class="fa fa-eye"></i></span>Manage
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background-color:maroon">
+                        <a class="dropdown-item bg-dark" asp-controller="Adminstration"
+                           asp-action="ListUsers">Users</a>
+                        <a class="dropdown-item bg-dark" asp-controller="Adminstration"
+                           asp-action="ListRoles">Roles</a>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+
+    <div class="content">
+        @RenderBody()
+
+        <div class="row footer">
+            <div class="col-md-6 text-left">
+                Copyright © @DateTime.Now.Year <a> Hotel Management System.</a> All rights reserved.
+            </div>
+        </div>
+    </div>
+    @*<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>*@
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script type="text/javascript" src="~/js/jquery.min.js"></script>
+
+    <script src="~/js/bootstrap/bootstrap.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @*<script src="~/lib/jquery/jquery.js"></script>*@
+    <script src="~/js/plugins.js"></script>
+    @*<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>*@
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+
+
+
